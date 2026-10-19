@@ -37,3 +37,7 @@ cliente.ping()
 lista_dinamica = pd.DataFrame.from_records(response);
 lista_dinamica.head();
 
+
+
+bhbhhvvgvvgvgvggvvgvgg
+
