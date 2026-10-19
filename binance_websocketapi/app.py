@@ -59,5 +59,5 @@ print(lista_dinamica);
 informacao_ativo = cliente.get_symbol_info('BTCBUSD');
 print(informacao_ativo);
 
-
+huigygtftftftfrdddddd
 984848489484848jijiuhuh
