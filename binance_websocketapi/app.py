@@ -103,3 +103,18 @@ print(informacao_conta)
 #detalhes de ativos
 detalhes_ativos = cliente.get_asset_balance(asset='ETH')
 print(detalhes_ativos)
+
+
+#Historico de negociaçao
+negociacoes_executadas = cliente.get_my_trades(symbol='BTCBUSD')
+print(negociacoes_executadas)
+
+
+#Todas as ordens
+buscar_ordens = cliente.get_all_orders(symbol = 'BTCBUSD')
+print(buscar_ordens)
+
+
+#Teste orden de compra
+ordem_compra = cliente.create_test_order(symbol='BTCBUSD', side='BUY', type='MARKET', quantity=0.0005)
+print(ordem_compra)
