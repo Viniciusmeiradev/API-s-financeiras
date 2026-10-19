@@ -93,3 +93,13 @@ print(preco_medio)
 ticket = cliente.get_ticker()
 lista_dinamica = pd.DataFrame(ticket)
 print(lista_dinamica)
+
+
+#informacao de conta
+informacao_conta = cliente.get_account()
+print(informacao_conta)
+
+
+#detalhes de ativos
+detalhes_ativos = cliente.get_asset_balance(asset='ETH')
+print(detalhes_ativos)
