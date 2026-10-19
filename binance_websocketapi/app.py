@@ -43,9 +43,19 @@ tempo_servidor = data_servidor['serverTime'] / 1000;
 data_padrao = datetime.datetime.fromtimestamp(tempo_servidor);
 data_padrao.strftime("%Y-%m-%d %H:%M:%S");
 
+
 #Lista todas as criptos
 moeda_infomacao = cliente.get_all_tickers()
 lista_dinamica = pd.DataFrame(moeda_infomacao)
 lista_dinamica.head()
 
+
+#Marcadores
+informacao_ativos = cliente.get_exchange_info();
+informacao_ativos.keys();
+lista_dinamica = pd.DataFrame(informacao_ativos['symbols']);
+print(lista_dinamica);
+
+informacao_ativo = cliente.get_symbol_info('BTCBUSD');
+print(informacao_ativo);
 
