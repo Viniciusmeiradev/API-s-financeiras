@@ -43,4 +43,9 @@ tempo_servidor = data_servidor['serverTime'] / 1000;
 data_padrao = datetime.datetime.fromtimestamp(tempo_servidor);
 data_padrao.strftime("%Y-%m-%d %H:%M:%S");
 
+#Lista todas as criptos
+moeda_infomacao = cliente.get_all_tickers()
+lista_dinamica = pd.DataFrame(moeda_infomacao)
+lista_dinamica.head()
+
 
