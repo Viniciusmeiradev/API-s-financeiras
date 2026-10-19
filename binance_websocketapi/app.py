@@ -75,3 +75,21 @@ print(lista_dinamica);
 trades_recentes = cliente.get_recent_trades(symbol='BTCBUSD')
 lista_dinamica = pd.DataFrame(trades_recentes)
 lista_dinamica.head()
+
+
+#historico trades
+id = lista_dinamica.loc[450,'id']
+historico_trades = cliente.get_historical_trades(symbol='BTCBUSD', limit=1000, fromId=id)
+lista_dinamica = pd.DataFrame(historico_trades)
+print(lista_dinamica)
+
+
+#preco medio
+preco_medio = cliente.get_avg_price(symbol='BTCBUSD')
+print(preco_medio)
+
+
+#preco de todas as criptos
+ticket = cliente.get_ticker()
+lista_dinamica = pd.DataFrame(ticket)
+print(lista_dinamica)
