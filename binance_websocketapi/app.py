@@ -2,6 +2,7 @@ import pandas as pd;
 import os;
 import json;
 import requests;
+import datetime;
 
 from binance.client import Client;
 from dotenv import load_dotenv;
@@ -31,13 +32,15 @@ lista_dinamica = pd.DataFrame.from_records(response);
 lista_dinamica.head();
 
 
-#EndPoints
+#Status servidor
 cliente.ping()
 
-lista_dinamica = pd.DataFrame.from_records(response);
-lista_dinamica.head();
 
+#tempo servidor
+data_servidor = cliente.get_server_time();
+print(data_servidor)
+tempo_servidor = data_servidor['serverTime'] / 1000;
+data_padrao = datetime.datetime.fromtimestamp(tempo_servidor);
+data_padrao.strftime("%Y-%m-%d %H:%M:%S");
 
-
-bhbhhvvgvvgvgvggvvgvgg
 
