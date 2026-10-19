@@ -118,3 +118,23 @@ print(buscar_ordens)
 #Teste orden de compra
 ordem_compra = cliente.create_test_order(symbol='BTCBUSD', side='BUY', type='MARKET', quantity=0.0005)
 print(ordem_compra)
+
+
+#Solicitacao de compra real
+solicitar_compra = cliente.order_market_buy(symbol='BTCBUSD', quantity=0.005)
+print(solicitar_compra)
+
+
+#Status da ordem
+status_ordem = cliente.get_order(symbol='BTCBUSD', orderId=status_ordem['orderId'])
+print(status_ordem)
+
+
+#Cancelar ordem
+cancelar_ordem = cliente.cancel_order(symbol='BTCBUSD', orderId='your_order_id')
+
+
+
+#Teste orden de compra
+ordem_compra = cliente.create_test_order(symbol='BTCBUSD', side='BUY', type='MARKET', quantity=0.0005)
+print(ordem_compra)
