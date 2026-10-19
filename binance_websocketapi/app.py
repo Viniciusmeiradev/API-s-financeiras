@@ -69,3 +69,9 @@ solicitacao = pd.DataFrame(lista_ofertas['solicitacao']);
 solicitacao.columns = ['preco', 'solicitacao'];
 lista_dinamica = pd.concat([ofertas, solicitacao]).fillna(0);
 print(lista_dinamica);
+
+
+#trades recentes
+trades_recentes = cliente.get_recent_trades(symbol='BTCBUSD')
+lista_dinamica = pd.DataFrame(trades_recentes)
+lista_dinamica.head()
