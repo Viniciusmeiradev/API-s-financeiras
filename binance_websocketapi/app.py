@@ -49,7 +49,6 @@ moeda_infomacao = cliente.get_all_tickers()
 lista_dinamica = pd.DataFrame(moeda_infomacao)
 lista_dinamica.head()
 
-
 #Marcadores
 informacao_ativos = cliente.get_exchange_info();
 informacao_ativos.keys();
@@ -59,5 +58,14 @@ print(lista_dinamica);
 informacao_ativo = cliente.get_symbol_info('BTCBUSD');
 print(informacao_ativo);
 
-huigygtftftftfrdddddd
-984848489484848jijiuhuh
+
+#Livro de ofertas
+lista_ofertas = cliente.get_order_book(symbol='BTCBUSD')
+print(lista_ofertas)
+
+ofertas = pd.DataFrame(lista_ofertas['ofertas']);
+ofertas.columns = ['preco', 'ofertas'];
+solicitacao = pd.DataFrame(lista_ofertas['solicitacao']);
+solicitacao.columns = ['preco', 'solicitacao'];
+lista_dinamica = pd.concat([ofertas, solicitacao]).fillna(0);
+print(lista_dinamica);
