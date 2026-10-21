@@ -167,3 +167,40 @@ ws = websocket.WebSocketApp(socket,
                             on_fechado = on_fechado)
 
 ws.run_forever()
+
+
+#CandleStick socket
+t, o, h, l, c, v = [], [],[], [],[], []
+
+def on_mensagem(ws, message):
+    converter = json.loads(message)
+    barra = converter['k']
+    if barra['x'] == False:
+        t.append(barra['t'])
+        o.append(barra['o'])
+        h.append(barra['h'])
+        l.append(barra['l'])
+        c.append(barra['c'])
+        v.append(barra['v'])
+    
+
+def on_error(ws, error):
+    print(error)
+
+def on_fechado(ws, close_status_code, close_msg):
+    print("Fechado")
+    barras = {'time':t, 'open':o, 'high':h, 'low':l, 'close':c, 'volume':v}
+    lista_dinamica = pd.DataFrame.from_dict(barras)
+    lista_dinamica.set_index('time', inplace=True)
+    print(lista_dinamica)
+
+def on_aberto(ws):
+    print("Opened connection")
+
+ws = websocket.WebSocketApp(socket,
+                            on_aberto = on_aberto, 
+                            on_mensagem = on_mensagem,
+                            on_error = on_error,
+                            on_fechado = on_fechado)
+
+ws.run_forever()
