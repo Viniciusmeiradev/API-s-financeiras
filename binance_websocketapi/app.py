@@ -133,6 +133,7 @@ print(status_ordem)
 #Cancelar ordem
 cancelar_ordem = cliente.cancel_order(symbol='BTCBUSD', orderId='your_order_id')
 
+
 #Socket Url
 symbol = 'btcusdt'
 socket = f'wss://stream.binance.com:9443/ws/{symbol}@trade'
@@ -140,13 +141,21 @@ socket = f'wss://stream.binance.com:9443/ws/{symbol}@trade'
 
 #Trade Socket
 def on_mensagem(ws, message):
-    print(message)
+    converter = json.loads(message)
+    lista_conversao = [(converter['T'], converter['P'])]
+    global lista_dinamica
+    lista_dinamica = pd.concat([lista_dinamica, pd.DataFrame.from_records(lista_conversao)])
 
 def on_error(ws, error):
     print(error)
 
 def on_fechado(ws, close_status_code, close_msg):
     print("Fechado")
+    lista_dinamica.columns = ['time', 'price']
+    lista_dinamica['time'] = pd.to_datetime(df['time'], unit='ms')
+    lista_dinamica.set_index(lista_dinamica['time'], inplace=True)
+    lista_dinamica.drop(columns='time', inplace=True)
+    print(lista_dinamica)
 
 def on_aberto(ws):
     print("Opened connection")
