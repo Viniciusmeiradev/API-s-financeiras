@@ -133,8 +133,8 @@ print(status_ordem)
 #Cancelar ordem
 cancelar_ordem = cliente.cancel_order(symbol='BTCBUSD', orderId='your_order_id')
 
+#Socket Url
+symbol = 'btcusdt'
+socket = f'wss://stream.binance.com:9443/ws/{symbol}@trade'
 
 
-#Teste orden de compra
-ordem_compra = cliente.create_test_order(symbol='BTCBUSD', side='BUY', type='MARKET', quantity=0.0005)
-print(ordem_compra)
