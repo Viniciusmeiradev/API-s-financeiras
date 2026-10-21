@@ -204,3 +204,5 @@ ws = websocket.WebSocketApp(socket,
                             on_fechado = on_fechado)
 
 ws.run_forever()
+
+hhuguygyftftft
