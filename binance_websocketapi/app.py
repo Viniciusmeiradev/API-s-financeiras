@@ -138,3 +138,23 @@ symbol = 'btcusdt'
 socket = f'wss://stream.binance.com:9443/ws/{symbol}@trade'
 
 
+#Trade Socket
+def on_mensagem(ws, message):
+    print(message)
+
+def on_error(ws, error):
+    print(error)
+
+def on_fechado(ws, close_status_code, close_msg):
+    print("Fechado")
+
+def on_aberto(ws):
+    print("Opened connection")
+
+ws = websocket.WebSocketApp(socket,
+                            on_aberto = on_aberto, 
+                            on_mensagem = on_mensagem,
+                            on_error = on_error,
+                            on_fechado = on_fechado)
+
+ws.run_forever()
