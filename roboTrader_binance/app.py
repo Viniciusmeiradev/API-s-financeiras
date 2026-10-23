@@ -34,3 +34,5 @@ Class BinanceTraderBot():
 
     def atualizarDados(self):
         self.
+
+jfsjajja
