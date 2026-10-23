@@ -33,6 +33,9 @@ Class BinanceTraderBot():
 
 
     def atualizarDados(self):
-        self.
+        self.dados_conta = getUpdatedAccountData()
+        self.balancoAtualCarteira = self.getBalancoAtualCarteira()
+        self.posicaoAtual = self.getPosicaoAtual()
+        self.dadosAcao = self.getDadosAcaoAtual()
 
-jfsjajja
+        
