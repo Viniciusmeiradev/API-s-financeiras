@@ -25,3 +25,12 @@ Class BinanceTraderBot():
         self.quantidadeTrader = quantidadeTrader
         self.porcentagemNegociada = porcentagemNegociada
         self.periodoVela = periodoVela;
+
+        self.clienteBinance = Client(api_key, secret_key)
+        self.atualizarDados()
+        print("--------------------------------------------")
+        print("Robo Trader Iniciado...")
+
+
+    def atualizarDados(self):
+        self.
