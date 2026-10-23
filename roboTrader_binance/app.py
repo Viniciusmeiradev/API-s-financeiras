@@ -15,3 +15,13 @@ codigoMoeda = "BTC"
 codigoOperacao = "BTCBRL"
 candlePeriodo = Client.KLINE_INTERVAL_15MINUTE
 quantidadeTrade = 0.01
+
+Class BinanceTraderBot():
+    ultima_descisao_trade : bool #False = Vender/True = Comprar
+
+    def __init__(self, codigoCripto, codigoNegociado, quantidadeTrader, porcentagemNegociada, periodoVela):
+        self.codigoCripto = codigoCripto
+        self.codigoNegociado = codigoNegociado
+        self.quantidadeTrader = quantidadeTrader
+        self.porcentagemNegociada = porcentagemNegociada
+        self.periodoVela = periodoVela;
