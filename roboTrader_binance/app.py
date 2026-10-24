@@ -52,6 +52,9 @@ Class BinanceTraderBot():
             return False #Vendido
 
 
+    def getDadosAcaoAtual(self):
+        velas = self.clienteBinance.get_klines(symbol = self.codigoNegociado, interval = self.periodoVela, limit = 500)
+        precos = pd.DataFrame(velas)
 
 
 
@@ -61,7 +64,6 @@ Class BinanceTraderBot():
         self.balancoAtualCarteira = self.getBalancoAtualCarteira()
         self.posicaoAtual = self.getPosicaoAtual()
         self.dadosAcao = self.getDadosAcaoAtual()
-
 
 
 
