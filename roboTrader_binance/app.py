@@ -64,11 +64,23 @@ Class BinanceTraderBot():
         return precos
 
 
+
+
     def atualizarDados(self):
         self.dados_conta = getAtualizarDadosConta()
         self.balancoAtualCarteira = self.getBalancoAtualCarteira()
         self.posicaoAtual = self.getPosicaoAtual()
         self.dadosAcao = self.getDadosAcaoAtual()
 
+
+
+    def getEstrategiaMediaMovel(self, fast_window = 7, slow_window = 40):
+        #Calculo Media Moveis
+        self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
+        self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
+
+        #Ultimas medias
+        ultimaMediaRapida = 
+        ultimaMediaLenta = 
 
         
