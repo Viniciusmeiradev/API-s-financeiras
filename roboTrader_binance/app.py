@@ -83,4 +83,4 @@ Class BinanceTraderBot():
         ultimaMediaRapida = 
         ultimaMediaLenta = 
 
-        
+        jijijijj
