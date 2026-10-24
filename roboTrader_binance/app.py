@@ -36,6 +36,13 @@ Class BinanceTraderBot():
     def getAtualizarDadosConta(self):
         return self.client_binance.get_account()
 
+    def getBalancoAtualCarteira(self):
+        for cripto in self.dados_conta['balances']:
+            if cripto['asset'] == self.codigoCripto:
+                carteira = cripto['free']
+        
+        return float(carteira)
+            
 
 
 
