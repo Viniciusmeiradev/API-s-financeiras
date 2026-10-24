@@ -55,8 +55,13 @@ Class BinanceTraderBot():
     def getDadosAcaoAtual(self):
         velas = self.clienteBinance.get_klines(symbol = self.codigoNegociado, interval = self.periodoVela, limit = 500)
         precos = pd.DataFrame(velas)
-
-
+        precos.columns = ["open_time", "open_price", "high_price", "low_price", "close_price", "volume", "close_time", 
+                          "quote_asset_volume","number_of_trades", "taker_buy_base_asset_volume", "taker_buy_quote_asset_volume", "-"]
+        
+        precos = precos[["close_price", "open_time"]]
+        precos["open_time"] = precos["open_time"].dt.tz_convert("America/Sao_Paulo")
+        precos["open_time"] = pd.to_datetime(precos["open_time"], unit="ms").dt.tz_localize("UTC")
+        return precos
 
 
     def atualizarDados(self):
@@ -64,7 +69,6 @@ Class BinanceTraderBot():
         self.balancoAtualCarteira = self.getBalancoAtualCarteira()
         self.posicaoAtual = self.getPosicaoAtual()
         self.dadosAcao = self.getDadosAcaoAtual()
-
 
 
         
