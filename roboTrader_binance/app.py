@@ -32,10 +32,20 @@ Class BinanceTraderBot():
         print("Robo Trader Iniciado...")
 
 
+
+    def getAtualizarDadosConta(self):
+        return self.client_binance.get_account()
+
+
+
+
+
+
     def atualizarDados(self):
-        self.dados_conta = getUpdatedAccountData()
+        self.dados_conta = getAtualizarDadosConta()
         self.balancoAtualCarteira = self.getBalancoAtualCarteira()
         self.posicaoAtual = self.getPosicaoAtual()
         self.dadosAcao = self.getDadosAcaoAtual()
+
 
         
