@@ -84,9 +84,15 @@ Class BinanceTraderBot():
         ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
 
         if ultimaMediaRapida > ultimaMediaLenta{
-            ma_trade_desition = True; #Compra
+            ma_trade_decision = True; #Compra
         }else{
-            ma_trade_desition = False; #Vende
+            ma_trade_decision = False; #Vende
         }
 
         print("**********************************")
+        print("Estratégia Executada com Sucesso.")
+        print(f"({self.codigoNegociado}) \n {ultimaMediaRapida:.3f} - Media Rápida \n {ultimaMediaLenta:.3f} - Media Lenta")
+        print(f"Decisao de posição: {"Comprar" if ma_trade_decision == True else "Vender"}")
+        print("**********************************")
+
+        return ma_trade_decision;
