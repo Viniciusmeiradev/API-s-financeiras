@@ -79,8 +79,14 @@ Class BinanceTraderBot():
         self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
         self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
 
-        #Ultimas medias
-        ultimaMediaRapida = 
-        ultimaMediaLenta = 
+        #Ultimas medias -> [-1] ulimo dado array
+        ultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-1]
+        ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
 
-        jijijijj
+        if ultimaMediaRapida > ultimaMediaLenta{
+            ma_trade_desition = True; #Compra
+        }else{
+            ma_trade_desition = False; #Vende
+        }
+
+        print("**********************************")
