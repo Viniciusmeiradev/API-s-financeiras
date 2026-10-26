@@ -18,3 +18,6 @@ def CriaOrdemLog(order){
     tempo = order["transactTime"]
     data = datetime.utcfromtimestamp(tempo / 1000).strftime("(%H:%M:%S) %Y-%m-%d")
 }
+
+
+afjafjija
