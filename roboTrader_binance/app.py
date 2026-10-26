@@ -16,8 +16,11 @@ codigoOperacao = "BTCBRL"
 candlePeriodo = Client.KLINE_INTERVAL_15MINUTE
 quantidadeTrade = 0.01
 
-Class BinanceTraderBot():
-    ultima_descisao_trade : bool #False = Vender/True = Comprar
+
+
+class BinanceTraderBot:
+
+    ultima_descisao_trade: bool = False;  #False = Vender/True = Comprar
 
     def __init__(self, codigoCripto, codigoNegociado, quantidadeTrader, porcentagemNegociada, periodoVela):
         self.codigoCripto = codigoCripto
@@ -34,10 +37,12 @@ Class BinanceTraderBot():
 
 
     def getAtualizarDadosConta(self):
-        return self.client_binance.get_account()
+        return self.clienteBinance.get_account()
 
 
     def getBalancoAtualCarteira(self):
+        carteira = 0.0
+
         for cripto in self.dados_conta['balances']:
             if cripto['asset'] == self.codigoCripto:
                 carteira = cripto['free']
@@ -67,32 +72,48 @@ Class BinanceTraderBot():
 
 
     def atualizarDados(self):
-        self.dados_conta = getAtualizarDadosConta()
+        self.dados_conta = self.getAtualizarDadosConta()
         self.balancoAtualCarteira = self.getBalancoAtualCarteira()
         self.posicaoAtual = self.getPosicaoAtual()
         self.dadosAcao = self.getDadosAcaoAtual()
 
 
 
-    def getEstrategiaMediaMovel(self, fast_window = 7, slow_window = 40):
-        #Calculo Media Moveis
+bot = BinanceTraderBot(
+    codigoCripto=codigoMoeda,
+    codigoNegociado=codigoOperacao,
+    quantidadeTrader=quantidadeTrade,
+    porcentagemNegociada=10,
+    periodoVela=candlePeriodo
+)
+
+
+
+
+
+def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
+        # Calculo das medias moveis
         self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
         self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
 
-        #Ultimas medias -> [-1] ulimo dado array
+        # Ultimas medias
         ultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-1]
         ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
 
-        if ultimaMediaRapida > ultimaMediaLenta{
-            ma_trade_decision = True; #Compra
-        }else{
-            ma_trade_decision = False; #Vende
-        }
+        if ultimaMediaRapida > ultimaMediaLenta:
+            ma_trade_decision = True  # Compra
+        else:
+            ma_trade_decision = False  # Vende
 
         print("**********************************")
-        print("Estratégia Executada com Sucesso.")
-        print(f"({self.codigoNegociado}) \n {ultimaMediaRapida:.3f} - Media Rápida \n {ultimaMediaLenta:.3f} - Media Lenta")
-        print(f"Decisao de posição: {"Comprar" if ma_trade_decision == True else "Vender"}")
+        print("Estrategia Executada com Sucesso.")
+        print(f"({self.codigoNegociado})")
+        print(f"{ultimaMediaRapida:.3f} - Media Rapida")
+        print(f"{ultimaMediaLenta:.3f} - Media Lenta")
+        print(f"Decisao de posicao: {'Comprar' if ma_trade_decision else 'Vender'}")
         print("**********************************")
 
-        return ma_trade_decision;
+        return ma_trade_decision
+
+
+
