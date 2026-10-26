@@ -18,7 +18,7 @@ def CriaOrdemLog(order){
     tempo = order["transactTime"]
     data = datetime.utcfromtimestamp(tempo / 1000).strftime("(%H:%M:%S) %Y-%m-%d")
 
-    log_message = (
+    logMessage = (
         "\n------------------------\n"
         "ORDEM EXECUTADA:\n"
         f"Lateralização: {lado}\n"
@@ -34,4 +34,23 @@ def CriaOrdemLog(order){
         f"{order}"
         "\n------------------------\n"
     )
+
+    printMessage = (
+        "\n------------------------\n"
+        "ORDEM EXECUTADA:\n"
+        f"Lateralização: {lado}\n"
+        f"Tipo: {tipo}\n"
+        f"Ativo: {ativo}\n"
+        f"Quantidade: {quantidade}\n"
+        f"Valor no momento: {PrecoUnidade}\n"
+        f"Moeda: {moeda}\n"
+        f"Valor {moeda}: {valorTotal}z\n"
+        f"Data/Hora: {data}\n"
+        "\n"
+        "Ordem Completa: \n"
+        f"{order}"
+        "\n------------------------\n"
+    )
+    print(printMessage)
+    logging.info(logMessage)
 }
