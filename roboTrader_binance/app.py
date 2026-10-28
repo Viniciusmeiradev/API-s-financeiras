@@ -155,3 +155,4 @@ def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
 
 hugyfgtftftftfttftf
 
+gyftftr6tdr6tdrtftftft
