@@ -117,3 +117,21 @@ def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
 
 
 
+
+def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
+    # Calculo medias moveis
+    self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
+    self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
+
+    #Calculo volatilidade
+    self.dadosAcao["volatility"] = self.dadosAcao["close_price"].rolling(window=slow_window).std()
+
+    #Calculo Gradiente
+    ultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-1]
+    penultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-3]
+
+    ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
+    penultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-3]
+
+
+
