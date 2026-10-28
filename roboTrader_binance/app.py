@@ -152,7 +152,11 @@ def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
 
 
     print("--------------------------------------")
+    print("Estrategia Executada: Media Móvel com Volatilidade + Gradiente.")
+    print(f'({self.codigoNegociado})')
+    print(f'| Ultima Média Rápida: {ultimaMediaRapida:.3f}')
+    print(f'| Ultima Média Lenta: {ultimaMediaLenta:.3f}')
+    print(f'| Ultima Volatilidade: {ultimaVolatilidade:.3f}')
+    print(f'| Diferença Atual: {diferencaAtual:.3f}')
 
-hugyfgtftftftfttftf
-
-gyftftr6tdr6tdrtftftft
+    print(f'| Diferenca para antecipação: {ultimaMediaRapida}')
