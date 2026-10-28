@@ -138,6 +138,19 @@ def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
     #Calculo do Gradiente das médias
     gradienteRapido = ultimaMediaRapida - penultimaMediaRapida
     gradienteLento = ultimaMediaLenta - penultimaMediaLenta
+    diferencaAtual = abs(ultimaMediaRapida - ultimaMediaLenta)
 
+    
+    
+    tradeDecisao = None
+
+    if diferencaAtual < ultimaVolatilidade * self.volatility_factor:
+        if gradienteRapido > 0 and gradienteRapido > gradienteLento:
+            tradeDecisao = True
+        elif gradienteRapido < 0 and gradienteRapido > gradienteLento:
+            tradeDecisao = False
+
+
+    print("--------------------------------------")
 
 
