@@ -153,4 +153,5 @@ def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
 
     print("--------------------------------------")
 
+hugyfgtftftftfttftf
 
