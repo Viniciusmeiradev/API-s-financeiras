@@ -159,4 +159,14 @@ def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
     print(f'| Ultima Volatilidade: {ultimaVolatilidade:.3f}')
     print(f'| Diferença Atual: {diferencaAtual:.3f}')
 
-    print(f'| Diferenca para antecipação: {ultimaMediaRapida}')
+    print(f'| Diferenca para antecipação: {volatility_factor * ultimaVolatilidade:.3f}')
+    print(f'| Gradiente Rápido: {gradienteRapido:.3f} ({"Subindo" if gradienteRapido > 0 else "Descendo"})')
+    print(f'| Gradiente Lento: {gradienteLento:.3f} ({"Subindo" if gradienteLento > 0 else "Descendo"})')
+    print(f'| Descisão: {"Comprar" if tradeDecisao == True else "Vender" if tradeDecisao == False else "Vender"}')
+    return tradeDecisao
+
+
+#Prints
+#Print Carteira
+
+def printCarteira(self):
