@@ -167,6 +167,13 @@ def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
 
 
 #Prints
-#Print Carteira
-
 def printCarteira(self):
+    for acao in self.dados_conta["balances"]:
+        if float(acao["free"]) > 0:
+            print(acao)
+
+
+def printAcao(self):
+    for acao in self.dados_conta["balances"]:
+        if acao["asset"] == self.codigoCripto: 
+            print(acao)
