@@ -182,3 +182,7 @@ def printBrl(self):
     for acao in self.dados_conta["balances"]:
         if acao["asset"] == "BRL":
             print(acao)
+
+
+
+kjjhhuhuhuiuh
