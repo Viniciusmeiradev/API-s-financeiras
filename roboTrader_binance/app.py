@@ -177,3 +177,8 @@ def printAcao(self):
     for acao in self.dados_conta["balances"]:
         if acao["asset"] == self.codigoCripto: 
             print(acao)
+
+def printBrl(self):
+    for acao in self.dados_conta["balances"]:
+        if acao["asset"] == "BRL":
+            print(acao)
