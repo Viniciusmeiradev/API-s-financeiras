@@ -185,5 +185,21 @@ def printBrl(self):
 
 
 
-kjjhhuhuhuiuh
-plkklklklklkl
+#Gets 
+def getCarteira(self):
+    for acao in self.dados_conta["balances"]:
+        if float(acao["free"]) > 0:
+            return acao
+
+
+def getAcao(self):
+    for acao in self.dados_conta["balances"]:
+        if acao["asset"] == self.codigoCripto:
+            return acao
+
+
+def compraCripto(self):
+    if self.posicaoAtual == False:
+        ordemCompra = self.clienteBinance.create_order(
+
+        )
