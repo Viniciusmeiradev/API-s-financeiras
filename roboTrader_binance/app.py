@@ -108,9 +108,9 @@ def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
         ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
 
         if ultimaMediaRapida > ultimaMediaLenta:
-            ma_trade_decision = True  # Compra
+            tradeDecisao = True  # Compra
         else:
-            ma_trade_decision = False  # Vende
+            tradeDecisao = False  # Vende
 
         print("**********************************")
         print("Estrategia Executada com Sucesso.")
@@ -120,7 +120,7 @@ def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
         print(f"Decisao de posicao: {'Comprar' if ma_trade_decision else 'Vender'}")
         print("**********************************")
 
-        return ma_trade_decision
+        return tradeDecisao
 
 
 
@@ -240,4 +240,32 @@ def vendaCripto(self):
             return False
 
 
-def execute(self):
+def executa(self):
+    self.atualizarDados()
+
+    print('-----------------------------------------')
+    print(f'Executado ({datetime.now().strftime("%Y-%m-%d %H:%M:%S")})')
+    print(f'Posição Atual: {"Comprado" if Trader.posicaoAtual else "Vendido"}')
+    print(f'Balanço Atual: {Trader.balancoAtualCarteira} ({self.codigoCripto})')
+
+    tradeDecisao = self.getEstrategiaMediaMovel()
+    self.ultimaDecisaoTrader = tradeDecisao
+
+    if self.posicaoAtual == False and self.ultimaDecisaoTrader == True:
+        self.printCripto()
+        self.printBrl()
+        self.CompraCripto()
+        time.sleep(2)
+        self.atualizarDados()
+        self.printCripto()
+        self.printBrl()
+    elif self.posicaoAtual == True and self.ultimaDecisaoTrader == False:
+        self.printCripto()
+        self.printBrl()
+        self.VendaCripto()
+        time.sleep(2)
+        self.atualizarDados()
+        self.printCripto()
+        self.printBrl()
+
+    print('----------------------------------------')
