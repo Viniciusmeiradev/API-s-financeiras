@@ -27,12 +27,13 @@ class BinanceTraderBot:
 
     ultima_descisao_trade: bool = False;  #False = Vender/True = Comprar
 
-    def __init__(self, codigoCripto, codigoNegociado, quantidadeTrader, porcentagemNegociada, periodoVela):
+    def __init__(self, codigoCripto, codigoNegociado, quantidadeTrader, porcentagemNegociada, periodoVela, volatilidadeFator = 1.5):
         self.codigoCripto = codigoCripto
         self.codigoNegociado = codigoNegociado
         self.quantidadeTrader = quantidadeTrader
         self.porcentagemNegociada = porcentagemNegociada
-        self.periodoVela = periodoVela;
+        self.periodoVela = periodoVela
+        self.volatilidadeFator = volatilidadeFator
 
         self.clienteBinance = Client(api_key, secret_key)
         self.atualizarDados()
@@ -70,8 +71,8 @@ class BinanceTraderBot:
                           "quote_asset_volume","number_of_trades", "taker_buy_base_asset_volume", "taker_buy_quote_asset_volume", "-"]
         
         precos = precos[["close_price", "open_time"]]
-        precos["open_time"] = precos["open_time"].dt.tz_convert("America/Sao_Paulo")
         precos["open_time"] = pd.to_datetime(precos["open_time"], unit="ms").dt.tz_localize("UTC")
+        precos["open_time"] = precos["open_time"].dt.tz_convert("America/Sao_Paulo")
         return precos
 
 
@@ -98,7 +99,7 @@ bot = BinanceTraderBot(
 
 
 
-def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
+    def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
         # Calculo das medias moveis
         self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
         self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
@@ -117,7 +118,7 @@ def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
         print(f"({self.codigoNegociado})")
         print(f"{ultimaMediaRapida:.3f} - Media Rapida")
         print(f"{ultimaMediaLenta:.3f} - Media Lenta")
-        print(f"Decisao de posicao: {'Comprar' if ma_trade_decision else 'Vender'}")
+        print(f"Decisao de posicao: {'Comprar' if tradeDecisao else 'Vender'}")
         print("**********************************")
 
         return tradeDecisao
@@ -125,153 +126,152 @@ def getEstrategiaMediaMovel(self, fast_window=7, slow_window=40):
 
 
 
-def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
-    # Calculo medias moveis
-    self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
-    self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
+    def getCalculoVolatilidade(self, fast_window = 7, slow_window = 40):
+        # Calculo medias moveis
+        self.dadosAcao["ma_fast"] = self.dadosAcao["close_price"].rolling(window=fast_window).mean()
+        self.dadosAcao["ma_slow"] = self.dadosAcao["close_price"].rolling(window=slow_window).mean()
 
-    #Calculo volatilidade
-    self.dadosAcao["volatility"] = self.dadosAcao["close_price"].rolling(window=slow_window).std()
+        #Calculo volatilidade
+        self.dadosAcao["volatility"] = self.dadosAcao["close_price"].rolling(window=slow_window).std()
 
-    #Geracao do Gradiente
-    ultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-1]
-    penultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-3]
+        #Geracao do Gradiente
+        ultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-1]
+        penultimaMediaRapida = self.dadosAcao["ma_fast"].iloc[-3]
 
-    ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
-    penultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-3]
+        ultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-1]
+        penultimaMediaLenta = self.dadosAcao["ma_slow"].iloc[-3]
 
-    ultimaVolatilidade = self.dadosAcao["volatility"].iloc[-2]
+        ultimaVolatilidade = self.dadosAcao["volatility"].iloc[-2]
 
-    #Calculo do Gradiente das médias
-    gradienteRapido = ultimaMediaRapida - penultimaMediaRapida
-    gradienteLento = ultimaMediaLenta - penultimaMediaLenta
-    diferencaAtual = abs(ultimaMediaRapida - ultimaMediaLenta)
-
+        #Calculo do Gradiente das médias
+        gradienteRapido = ultimaMediaRapida - penultimaMediaRapida
+        gradienteLento = ultimaMediaLenta - penultimaMediaLenta
+        diferencaAtual = abs(ultimaMediaRapida - ultimaMediaLenta)
     
-    
-    tradeDecisao = None
+        tradeDecisao = None
 
-    if diferencaAtual < ultimaVolatilidade * self.volatility_factor:
-        if gradienteRapido > 0 and gradienteRapido > gradienteLento:
-            tradeDecisao = True
-        elif gradienteRapido < 0 and gradienteRapido > gradienteLento:
-            tradeDecisao = False
-
-
-    print("--------------------------------------")
-    print("Estrategia Executada: Media Móvel com Volatilidade + Gradiente.")
-    print(f'({self.codigoNegociado})')
-    print(f'| Ultima Média Rápida: {ultimaMediaRapida:.3f}')
-    print(f'| Ultima Média Lenta: {ultimaMediaLenta:.3f}')
-    print(f'| Ultima Volatilidade: {ultimaVolatilidade:.3f}')
-    print(f'| Diferença Atual: {diferencaAtual:.3f}')
-
-    print(f'| Diferenca para antecipação: {volatility_factor * ultimaVolatilidade:.3f}')
-    print(f'| Gradiente Rápido: {gradienteRapido:.3f} ({"Subindo" if gradienteRapido > 0 else "Descendo"})')
-    print(f'| Gradiente Lento: {gradienteLento:.3f} ({"Subindo" if gradienteLento > 0 else "Descendo"})')
-    print(f'| Descisão: {"Comprar" if tradeDecisao == True else "Vender" if tradeDecisao == False else "Vender"}')
-    return tradeDecisao
+        if diferencaAtual < ultimaVolatilidade * self.volatility_factor:
+            if gradienteRapido > 0 and gradienteRapido > gradienteLento:
+                tradeDecisao = True
+            elif gradienteRapido < 0 and gradienteRapido > gradienteLento:
+                tradeDecisao = False
 
 
-#Prints
-def printCarteira(self):
-    for acao in self.dados_conta["balances"]:
-        if float(acao["free"]) > 0:
-            print(acao)
+        print("--------------------------------------")
+        print("Estrategia Executada: Media Móvel com Volatilidade + Gradiente.")
+        print(f'({self.codigoNegociado})')
+        print(f'| Ultima Média Rápida: {ultimaMediaRapida:.3f}')
+        print(f'| Ultima Média Lenta: {ultimaMediaLenta:.3f}')
+        print(f'| Ultima Volatilidade: {ultimaVolatilidade:.3f}')
+        print(f'| Diferença Atual: {diferencaAtual:.3f}')
+
+        print(f'| Diferenca para antecipação: {volatilidadeFator * ultimaVolatilidade:.3f}')
+        print(f'| Gradiente Rápido: {gradienteRapido:.3f} ({"Subindo" if gradienteRapido > 0 else "Descendo"})')
+        print(f'| Gradiente Lento: {gradienteLento:.3f} ({"Subindo" if gradienteLento > 0 else "Descendo"})')
+        print(f'| Descisão: {"Comprar" if tradeDecisao == True else "Vender" if tradeDecisao == False else "Vender"}')
+        
+        return tradeDecisao
 
 
-def printAcao(self):
-    for acao in self.dados_conta["balances"]:
-        if acao["asset"] == self.codigoCripto: 
-            print(acao)
-
-def printBrl(self):
-    for acao in self.dados_conta["balances"]:
-        if acao["asset"] == "BRL":
-            print(acao)
+    #Prints
+    def printCarteira(self):
+        for acao in self.dados_conta["balances"]:
+            if float(acao["free"]) > 0:
+                print(acao)
 
 
+    def printAcao(self):
+        for acao in self.dados_conta["balances"]:
+            if acao["asset"] == self.codigoCripto: 
+                print(acao)
 
-#Gets 
-def getCarteira(self):
-    for acao in self.dados_conta["balances"]:
-        if float(acao["free"]) > 0:
-            return acao
-
-
-def getAcao(self):
-    for acao in self.dados_conta["balances"]:
-        if acao["asset"] == self.codigoCripto:
-            return acao
+    def printBrl(self):
+        for acao in self.dados_conta["balances"]:
+            if acao["asset"] == "BRL":
+                print(acao)
 
 
 
-def compraCripto(self):
-    if self.posicaoAtual == False:
-        ordemCompra = self.clienteBinance.create_order(
-        symbol = self.codigoNegociado,
-        lado = LADO_COMPRA,
-        type = ORDER_TYPE_MARKET, 
-        quantidade = self.quantidadeTrade,
-        )
-        self.posicaoAtual = True
-        createLogOrder(ordemCompra)
-        return ordemCompra
-    else:
-        logging.warning("Erro ao comprar.")
-        print("Erro ao comprar.")
-        return False
+    #Gets 
+    def getCarteira(self):
+        for acao in self.dados_conta["balances"]:
+            if float(acao["free"]) > 0:
+                return acao
 
 
-def vendaCripto(self):
-    if self.posicaoAtual == True:
-        ordemCompra = self.clienteBinance.create_order(
-        symbol = self.codigoNegociado, 
-        lado = LADO_VENDA, 
-        type = ORDER_TYPE_MARKET,
-        quantidade = int(self.balancoAtualCarteira * 1000) / 1000,
-        )
-        self.posicaoAtual = False
-        createLogOrder(ordemVenda)
-        return ordemVenda
-    else:
-            logging.warning("Erro ao Vender.")
-            print("Erro ao Vender.")
+    def getAcao(self):
+        for acao in self.dados_conta["balances"]:
+            if acao["asset"] == self.codigoCripto:
+                return acao
+
+
+
+    def compraCripto(self):
+        if self.posicaoAtual == False:
+            ordemCompra = self.clienteBinance.create_order(
+            symbol = self.codigoNegociado,
+            side=SIDE_BUY,
+            type = ORDER_TYPE_MARKET, 
+            quantidade = self.quantidadeTrade,
+            )
+            self.posicaoAtual = True
+            createLogOrder(ordemCompra)
+            return ordemCompra
+        else:
+            logging.warning("Erro ao comprar.")
+            print("Erro ao comprar.")
             return False
 
 
-def executa(self):
-    self.atualizarDados()
+    def vendaCripto(self):
+        if self.posicaoAtual == True:
+            ordemVenda = self.clienteBinance.create_order(
+            symbol = self.codigoNegociado, 
+            side=SIDE_SELL, 
+            type = ORDER_TYPE_MARKET,
+            quantidade = int(self.balancoAtualCarteira * 1000) / 1000,
+            )
+            self.posicaoAtual = False
+            createLogOrder(ordemVenda)
+            return ordemVenda
+        else:
+                logging.warning("Erro ao Vender.")
+                print("Erro ao Vender.")
+                return False
 
-    print('-----------------------------------------')
-    print(f'Executado ({datetime.now().strftime("%Y-%m-%d %H:%M:%S")})')
-    print(f'Posição Atual: {"Comprado" if trader.posicaoAtual else "Vendido"}')
-    print(f'Balanço Atual: {trader.balancoAtualCarteira} ({self.codigoCripto})')
 
-    tradeDecisao = self.getEstrategiaMediaMovel()
-    self.ultimaDecisaoTrader = tradeDecisao
-
-    if self.posicaoAtual == False and self.ultimaDecisaoTrader == True:
-        self.printCripto()
-        self.printBrl()
-        self.CompraCripto()
-        time.sleep(2)
+    def executa(self):
         self.atualizarDados()
-        self.printCripto()
-        self.printBrl()
-    elif self.posicaoAtual == True and self.ultimaDecisaoTrader == False:
-        self.printCripto()
-        self.printBrl()
-        self.VendaCripto()
-        time.sleep(2)
-        self.atualizarDados()
-        self.printCripto()
-        self.printBrl()
 
-    print('----------------------------------------')
+        print('-----------------------------------------')
+        print(f'Executado ({datetime.now().strftime("%Y-%m-%d %H:%M:%S")})')
+        print(f'Posição Atual: {"Comprado" if trader.posicaoAtual else "Vendido"}')
+        print(f'Balanço Atual: {trader.balancoAtualCarteira} ({self.codigoCripto})')
+
+        tradeDecisao = self.getEstrategiaMediaMovel()
+        self.ultimaDecisaoTrader = tradeDecisao
+
+        if self.posicaoAtual == False and self.ultimaDecisaoTrader == True:
+            self.printCripto()
+            self.printBrl()
+            self.CompraCripto()
+            time.sleep(2)
+            self.atualizarDados()
+            self.printCripto()
+            self.printBrl()
+        elif self.posicaoAtual == True and self.ultimaDecisaoTrader == False:
+            self.printCripto()
+            self.printBrl()
+            self.VendaCripto()
+            time.sleep(2)
+            self.atualizarDados()
+            self.printCripto()
+            self.printBrl()
+
+        print('----------------------------------------')
 
 trader = BinanceTraderBot(codigoMoeda, codigoOperacao,quantidadeTrade, 100, candlePeriodo)
 
 while(1):
-    trader.execute()
+    trader.executa()
     time.sleep(60)
