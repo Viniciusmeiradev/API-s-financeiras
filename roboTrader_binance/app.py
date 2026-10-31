@@ -245,8 +245,8 @@ def executa(self):
 
     print('-----------------------------------------')
     print(f'Executado ({datetime.now().strftime("%Y-%m-%d %H:%M:%S")})')
-    print(f'Posição Atual: {"Comprado" if Trader.posicaoAtual else "Vendido"}')
-    print(f'Balanço Atual: {Trader.balancoAtualCarteira} ({self.codigoCripto})')
+    print(f'Posição Atual: {"Comprado" if trader.posicaoAtual else "Vendido"}')
+    print(f'Balanço Atual: {trader.balancoAtualCarteira} ({self.codigoCripto})')
 
     tradeDecisao = self.getEstrategiaMediaMovel()
     self.ultimaDecisaoTrader = tradeDecisao
@@ -269,3 +269,9 @@ def executa(self):
         self.printBrl()
 
     print('----------------------------------------')
+
+trader = BinanceTraderBot(codigoMoeda, codigoOperacao,quantidadeTrade, 100, candlePeriodo)
+
+while(1):
+    trader.execute()
+    time.sleep(60)
