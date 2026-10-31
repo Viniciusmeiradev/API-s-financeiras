@@ -201,5 +201,15 @@ def getAcao(self):
 def compraCripto(self):
     if self.posicaoAtual == False:
         ordemCompra = self.clienteBinance.create_order(
-
+        symbol = self.codigoNegociado,
+        lado = LADOCOMPRA,
+        type = ORDER_TYPE_MARKET, 
+        quantidade = self.quantidadeTrade,
         )
+        self.posicaoAtual = True
+        createLogOrder(ordemCompra)
+        return ordemCompra
+    else:
+        logging.warning("Erro ao comprar.")
+        print("Erro ao comprar.")
+        return False
