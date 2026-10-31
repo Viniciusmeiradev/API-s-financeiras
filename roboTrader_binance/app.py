@@ -17,6 +17,11 @@ candlePeriodo = Client.KLINE_INTERVAL_15MINUTE
 quantidadeTrade = 0.01
 
 
+logging.basicConfig(
+    filename = "src/logs/trading_bot.log",
+    level = logging.INFO,
+    format = "%(asctime)s - %(levelname)s %(message)s"
+)
 
 class BinanceTraderBot:
 
@@ -58,6 +63,7 @@ class BinanceTraderBot:
 
 
     def getDadosAcaoAtual(self):
+
         velas = self.clienteBinance.get_klines(symbol = self.codigoNegociado, interval = self.periodoVela, limit = 500)
         precos = pd.DataFrame(velas)
         precos.columns = ["open_time", "open_price", "high_price", "low_price", "close_price", "volume", "close_time", 
@@ -76,6 +82,7 @@ class BinanceTraderBot:
         self.balancoAtualCarteira = self.getBalancoAtualCarteira()
         self.posicaoAtual = self.getPosicaoAtual()
         self.dadosAcao = self.getDadosAcaoAtual()
+
 
 
 
@@ -198,11 +205,12 @@ def getAcao(self):
             return acao
 
 
+
 def compraCripto(self):
     if self.posicaoAtual == False:
         ordemCompra = self.clienteBinance.create_order(
         symbol = self.codigoNegociado,
-        lado = LADOCOMPRA,
+        lado = LADO_COMPRA,
         type = ORDER_TYPE_MARKET, 
         quantidade = self.quantidadeTrade,
         )
