@@ -213,3 +213,23 @@ def compraCripto(self):
         logging.warning("Erro ao comprar.")
         print("Erro ao comprar.")
         return False
+
+
+def vendaCripto(self):
+    if self.posicaoAtual == True:
+        ordemCompra = self.clienteBinance.create_order(
+        symbol = self.codigoNegociado, 
+        lado = LADO_VENDA, 
+        type = ORDER_TYPE_MARKET,
+        quantidade = int(self.balancoAtualCarteira * 1000) / 1000,
+        )
+        self.posicaoAtual = False
+        createLogOrder(ordemVenda)
+        return ordemVenda
+    else:
+            logging.warning("Erro ao Vender.")
+            print("Erro ao Vender.")
+            return False
+
+
+def execute(self):
